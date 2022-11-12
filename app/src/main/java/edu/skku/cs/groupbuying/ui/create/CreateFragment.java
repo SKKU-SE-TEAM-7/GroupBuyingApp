@@ -1,4 +1,4 @@
-package edu.skku.cs.groupbuying.ui.home;
+package edu.skku.cs.groupbuying.ui.create;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,35 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
-import edu.skku.cs.groupbuying.databinding.FragmentHomeBinding;
+import edu.skku.cs.groupbuying.databinding.FragmentCreateBinding;
 
-public class HomeFragment extends Fragment {
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-    private FragmentHomeBinding binding;
+public class CreateFragment extends Fragment {
+
+    private FragmentCreateBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        CreateViewModel createViewModel =
+                new ViewModelProvider(this).get(CreateViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentCreateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final FloatingActionButton add = binding.addNew;
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.HomeToCreate();
-            }
-        });
 
-        hideBottomNavigation(false);
+
+        hideBottomNavigation(true);
         return root;
     }
 
@@ -56,4 +48,5 @@ public class HomeFragment extends Fragment {
         else
             bottomNavigation.setVisibility(View.VISIBLE);
     }
+
 }
