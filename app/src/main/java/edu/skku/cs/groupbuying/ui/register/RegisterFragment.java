@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,17 @@ public class RegisterFragment extends Fragment {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final Button enroll = binding.enrollButton;
+        final Button enroll = binding.joinButton;
+        final Button check_button = binding.checkButton;
+
+        final EditText email = binding.joinEmail;
+
+
+        final EditText password = binding.joinPassword;
+        final EditText password_verification = binding.joinPwck;
+        final EditText verification_code = binding.validationCode;
+        final EditText nickname = binding.nickname;
+
         enroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
