@@ -29,9 +29,6 @@ public class CreateFragment extends Fragment {
         binding = FragmentCreateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-
-        hideBottomNavigation(true);
         return root;
     }
 
@@ -39,14 +36,6 @@ public class CreateFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    public void hideBottomNavigation(Boolean bool) {
-        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.nav_view);
-        if (bool == true)
-            bottomNavigation.setVisibility(View.GONE);
-        else
-            bottomNavigation.setVisibility(View.VISIBLE);
     }
 
 }

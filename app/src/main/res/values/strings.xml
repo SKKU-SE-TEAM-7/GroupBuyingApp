@@ -3,6 +3,7 @@
     <string name="title_login">로그인</string>
     <string name="title_register">회원가입</string>
     <string name="title_home">홈</string>
+    <string name="title_detail">공동구매 참여하기</string>
     <string name="title_create">새로운 공동구매 생성</string>
     <string name="title_dashboard">채팅</string>
     <string name="title_notifications">마이페이지</string>

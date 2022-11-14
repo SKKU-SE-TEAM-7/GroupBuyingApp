@@ -36,7 +36,16 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_create"
             app:destination="@id/navigation_create" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_detail"
+        android:name="edu.skku.cs.groupbuying.ui.detail.DetailFragment"
+        android:label="@string/title_detail"
+        tools:layout="@layout/fragment_detail" />
 
     <fragment
         android:id="@+id/navigation_create"
