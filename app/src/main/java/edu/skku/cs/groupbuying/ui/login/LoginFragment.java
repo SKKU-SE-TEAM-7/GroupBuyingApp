@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,11 @@ public class LoginFragment extends Fragment {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textLogin;
-        textView.setText("login");
+        final EditText textView = binding.emailInput;
+
+
+        final EditText textView2 = binding.passwordInput;
+
 
         final Button login = binding.loginButton;
         login.setOnClickListener(new View.OnClickListener() {
