@@ -23,7 +23,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpRequestGet {
-    final private static String server_adrs = "http://10.0.2.2:5000";
+    //final private static String server_adrs = "http://10.0.2.2:5000";
+    final private static String server_adrs = "http://52.78.137.254:8080";
 
     private boolean success;
 

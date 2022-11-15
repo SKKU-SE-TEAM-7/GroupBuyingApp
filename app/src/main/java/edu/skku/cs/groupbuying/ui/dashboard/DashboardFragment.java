@@ -1,7 +1,6 @@
 package edu.skku.cs.groupbuying.ui.dashboard;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,8 @@ import edu.skku.cs.groupbuying.HttpRequestGet;
 import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
-import edu.skku.cs.groupbuying.ResponseChatGetlist;
+import edu.skku.cs.groupbuying.networkobject.ResponseChatGetlist;
 import edu.skku.cs.groupbuying.databinding.FragmentDashboardBinding;
-import okhttp3.Response;
 
 public class DashboardFragment extends Fragment {
 
@@ -77,7 +75,6 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initDataset() {
-        ////////////////////////////테스트 중 원래 api 필요
         mData = new ArrayList<ItemData>();
 
         HttpRequestGet request = new HttpRequestGet("/chat/getlist");
