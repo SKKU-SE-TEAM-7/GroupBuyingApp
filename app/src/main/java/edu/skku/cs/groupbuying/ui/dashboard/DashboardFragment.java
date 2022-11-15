@@ -1,6 +1,7 @@
 package edu.skku.cs.groupbuying.ui.dashboard;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import edu.skku.cs.groupbuying.HttpRequestGet;
 import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
+import edu.skku.cs.groupbuying.ResponseChatGetlist;
 import edu.skku.cs.groupbuying.databinding.FragmentDashboardBinding;
+import okhttp3.Response;
 
 public class DashboardFragment extends Fragment {
 
@@ -75,6 +79,15 @@ public class DashboardFragment extends Fragment {
     private void initDataset() {
         ////////////////////////////테스트 중 원래 api 필요
         mData = new ArrayList<ItemData>();
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "채팅방 1"));
+
+        HttpRequestGet request = new HttpRequestGet("/chat/getlist");
+        request.addQueryParam("token", "1");
+        String responseStr = request.sendRequest();
+
+        ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
+
+        for (int i = 0; i < response.getChatlist().size(); i++) {
+            mData.add(new ItemData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(response.getChatlist().get(i).getChatid())));
+        }
     }
 }
