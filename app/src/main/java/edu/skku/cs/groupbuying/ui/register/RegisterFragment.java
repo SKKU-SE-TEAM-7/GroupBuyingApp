@@ -2,6 +2,7 @@ package edu.skku.cs.groupbuying.ui.register;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterFragment extends Fragment {
 
@@ -104,23 +108,33 @@ public class RegisterFragment extends Fragment {
     }
 
     public void register_to_server(EditText email, EditText password, EditText nickname){
-        /*
+
         OkHttpClient client = new OkHttpClient();
 
+        /*
         RegisterDataModel data = new RegisterDataModel();
         data.setUser_email(email.getText().toString());
         data.setUser_password(password.getText().toString());
         data.setNickname(nickname.getText().toString());
 
         Gson gson = new Gson();
-        String json = gson.toJson(data, RegisterDataModel.class);
+        String json = "user_email=test@skku.edu&user_password=password&nickname=admin";
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/user/register").newBuilder();
+        String url = urlBuilder.build().toString();
+*/
+        List<Pair> params = new ArrayList<Pair>();
+        params.add(new Pair("user_email", "boy980705@skku.edu"));
+        params.add(new Pair("user_password", "1111"));
+        params.add(new Pair("nickname", "lee"));
+        byte[] postData = CreateQuery(params, "UTF-8");
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/user/register").newBuilder();
         String url = urlBuilder.build().toString();
 
         Request req = new Request.Builder()
                 .url(url)
-                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"),postData))
                 .build();
 
         client.newCall(req).enqueue(new Callback() {
@@ -132,12 +146,33 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 final String myResponse = response.body().string();
-                Gson gson = new GsonBuilder().create();
                 Log.e("error", myResponse);
                 //Toast toast=Toast.makeText(getContext(),""+myResponse,Toast.LENGTH_SHORT);
                 //toast.show();
             }
-        });*/
+        });
+    }
+
+    public static byte[] CreateQuery(List<Pair> pairs, String charset) {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        try {
+            for (Pair pair : pairs) {
+
+                if (first)
+                    first = false;
+                else
+                    result.append('&');
+
+                result.append(URLEncoder.encode((String) pair.first, charset));
+                result.append('=');
+                result.append(URLEncoder.encode((String) pair.second, charset));
+            }
+        }
+        catch( Exception e ) {
+
+        }
+        return result.toString().getBytes();
     }
 
 }
