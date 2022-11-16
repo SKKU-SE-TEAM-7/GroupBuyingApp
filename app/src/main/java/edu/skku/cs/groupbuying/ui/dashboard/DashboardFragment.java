@@ -1,6 +1,7 @@
 package edu.skku.cs.groupbuying.ui.dashboard;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class DashboardFragment extends Fragment {
         mData = new ArrayList<ChatData>();
 
         HttpRequestGet request = new HttpRequestGet("/chat/getlist");
-        request.addQueryParam("token", "1");
+        request.addQueryParam("token", "99449814");
         String responseStr = request.sendRequest();
 
         ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
@@ -86,5 +87,7 @@ public class DashboardFragment extends Fragment {
         for (int i = 0; i < response.getChatlist().size(); i++) {
             mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(response.getChatlist().get(i).getChatid())));
         }
+
+        Log.d("ahoy", responseStr);
     }
 }

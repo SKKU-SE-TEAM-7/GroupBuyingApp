@@ -27,12 +27,13 @@ import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.databinding.FragmentHomeBinding;
 
 public class ChatFragment extends Fragment {
-/*
     private RecyclerView recyclerView;
-    private RecycleViewAdapter adapter;
-    private FragmentHomeBinding binding;
+    private RecyclerViewAdapter adapter;
+    //private FragmentChatBinding binding;
     private ArrayList<ItemData> mData;
     private ArrayList<ItemData> searchData = new ArrayList<>();
+
+    /*
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
