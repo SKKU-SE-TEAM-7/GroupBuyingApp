@@ -51,7 +51,11 @@
         android:id="@+id/navigation_create"
         android:name="edu.skku.cs.groupbuying.ui.create.CreateFragment"
         android:label="@string/title_create"
-        tools:layout="@layout/fragment_create" />
+        tools:layout="@layout/fragment_create" >
+        <action
+            android:id="@+id/action_navigation_create_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
