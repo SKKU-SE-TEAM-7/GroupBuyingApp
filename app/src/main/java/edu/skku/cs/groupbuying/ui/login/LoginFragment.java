@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.databinding.FragmentLoginBinding;
@@ -118,7 +119,9 @@ public class LoginFragment extends Fragment {
                     public void run() {
                         if(code == 200){
                             MainActivity activity = (MainActivity) getActivity();
-                            activity.LoginToHome(data.getToken());
+                            int token = data.getToken();
+                            GlobalObject.setToken(token);
+                            activity.LoginToHome(token);
                         }
                         else{
                             Toast toast=Toast.makeText(getContext(),"유효하지 않은 비밀번호입니다",Toast.LENGTH_SHORT);

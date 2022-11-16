@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
@@ -79,8 +80,6 @@ public class HomeFragment extends Fragment {
                 search_item(search_space);
             }
         });
-
-
 
         hideBottomNavigation(false);
         return root;
