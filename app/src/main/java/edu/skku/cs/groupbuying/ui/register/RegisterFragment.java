@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import edu.skku.cs.groupbuying.HttpRequestGet;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.databinding.FragmentRegisterBinding;
+import edu.skku.cs.groupbuying.ui.login.LoginDataModel;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -60,7 +62,7 @@ public class RegisterFragment extends Fragment {
         check_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                verify_email(email);
             }
         });
 
@@ -68,10 +70,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(check_password(password, password_verification)){
-                    register_to_server(email, password, nickname);
-
-                    MainActivity activity = (MainActivity) getActivity();
-                    activity.RegisterToLogin();
+                    register_to_server(verification_code, email, password, nickname);
                 }
             }
         });
@@ -107,26 +106,61 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    public void register_to_server(EditText email, EditText password, EditText nickname){
+    public void verify_email(EditText email){
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/user/authcode").newBuilder();
+        urlBuilder.addQueryParameter("user_email", email.getText().toString());
+        String url = urlBuilder.build().toString();
+
+        Request req = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final int code = response.code();
+
+                MainActivity activity = (MainActivity) getActivity();
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(code == 200){
+                            Toast toast=Toast.makeText(getContext(),"인증번호가 전송되었습니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else if(code == 201) {
+                            Toast toast=Toast.makeText(getContext(),"이미 존재하는 이메일입니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else{
+                            Toast toast=Toast.makeText(getContext(),"성균관대 이메일 형식이 아닙니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+    }
+
+    public void register_to_server(EditText verify_code, EditText email, EditText password, EditText nickname){
 
         OkHttpClient client = new OkHttpClient();
 
-        /*
-        RegisterDataModel data = new RegisterDataModel();
-        data.setUser_email(email.getText().toString());
-        data.setUser_password(password.getText().toString());
-        data.setNickname(nickname.getText().toString());
-
-        Gson gson = new Gson();
-        String json = "user_email=test@skku.edu&user_password=password&nickname=admin";
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/user/register").newBuilder();
-        String url = urlBuilder.build().toString();
-*/
         List<Pair> params = new ArrayList<Pair>();
-        params.add(new Pair("user_email", "boy980705@skku.edu"));
-        params.add(new Pair("user_password", "1111"));
-        params.add(new Pair("nickname", "lee"));
+        params.add(new Pair("user_email", email.getText().toString()));
+        params.add(new Pair("user_password", password.getText().toString()));
+        params.add(new Pair("nickname", nickname.getText().toString()));
+        params.add(new Pair("authcode", verify_code.getText().toString()));
         byte[] postData = CreateQuery(params, "UTF-8");
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/user/register").newBuilder();
@@ -145,10 +179,28 @@ public class RegisterFragment extends Fragment {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                final String myResponse = response.body().string();
-                Log.e("error", myResponse);
-                //Toast toast=Toast.makeText(getContext(),""+myResponse,Toast.LENGTH_SHORT);
-                //toast.show();
+                final int code = response.code();
+
+                MainActivity activity = (MainActivity) getActivity();
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(code == 200){
+                            MainActivity activity = (MainActivity) getActivity();
+                            activity.RegisterToLogin();
+                            Toast toast=Toast.makeText(getContext(),"회원가입이 완료되었습니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else if(code == 201) {
+                            Toast toast=Toast.makeText(getContext(),"메일 인증번호가 틀립니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else{
+                            Toast toast=Toast.makeText(getContext(),"이미 존재하는 이메일입니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                });
             }
         });
     }

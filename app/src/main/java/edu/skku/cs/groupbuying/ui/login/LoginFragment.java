@@ -28,6 +28,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -102,14 +106,19 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                final int myResponse = response.code();
+                final int code = response.code();
+
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final LoginDataModel data = gson.fromJson(myResponse, LoginDataModel.class);
+
                 MainActivity activity = (MainActivity) getActivity();
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(myResponse == 200){
+                        if(code == 200){
                             MainActivity activity = (MainActivity) getActivity();
-                            activity.LoginToHome();
+                            activity.LoginToHome(data.getToken());
                         }
                         else{
                             Toast toast=Toast.makeText(getContext(),"유효하지 않은 비밀번호입니다",Toast.LENGTH_SHORT);

@@ -1,6 +1,9 @@
 package edu.skku.cs.groupbuying;
 
+import static androidx.core.os.BundleKt.bundleOf;
+
 import android.os.Bundle;
+import android.util.Pair;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void LoginToHome(){
+    public void LoginToHome(int token){
+        Bundle result = new Bundle();
+        result.putInt("token", token);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        navController.navigate(R.id.action_navigation_login_to_navigation_home);
+        navController.navigate(R.id.action_navigation_login_to_navigation_home, result);
     }
 
     public void LoginToRegister(){
