@@ -23,7 +23,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpRequestGet {
-    //final private static String server_adrs = "http://10.0.2.2:5000";
     final private static String server_adrs = "http://52.78.137.254:8080";
 
     private boolean success;
@@ -42,20 +41,66 @@ public class HttpRequestGet {
         urlBuilder.addQueryParameter(key, value);
     }
 
-    public String sendRequest() {
+    public synchronized String sendRequest() {
+        boolean isFinished = false;
+
         String url = urlBuilder.build().toString();
         Request req = new Request.Builder().url(url).build();
 
-        String response = "";
+        Log.d("ahoy", "get url: " + url);
+        response = "";
 
         CallbackFuture future = new CallbackFuture();
         client.newCall(req).enqueue(future);
         try {
             Response resp = future.get();
             response = resp.body().string();
+        //    isFinished = true;
         } catch (Exception e) {
+            response = "non";
         }
 
+        Log.d("ahoy", "response: " + response);
         return response;
+
+        /*
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
+                response = resp.body().string();
+            }
+        });*/
+
+        /*
+        try {
+            Log.d("ahoy", "bfor call wait");
+            call.wait();
+            Log.d("ahoy", "call wait");
+        } catch (InterruptedException e) {
+
+            e.printStackTrace();
+        }*/
+
+        /*
+        try {
+            Response resp = client.newCall(req).execute();
+            Log.d("ahoy", "after resp");
+
+            response = resp.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        /*
+        Log.d("ahoy", "in get: " + response);
+        Log.d("ahoy", "bfor while");
+        //while (response == "") {}
+        Log.d("ahoy", "in get: " + response);
+
+        return response;*/
     }
 }

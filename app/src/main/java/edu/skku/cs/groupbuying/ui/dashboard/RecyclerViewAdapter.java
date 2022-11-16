@@ -38,8 +38,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     RecyclerViewAdapter(ArrayList<ChatData> list, Activity activity) {
         mData = list ;
         mActivity = activity;
-
-        Log.d("ahoy", mData.get(0).item_title);
     }
 
     @Override
@@ -54,13 +52,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mImage.setImageResource(mData.get(position).item_img);
         holder.mTitle.setText(mData.get(position).item_title);
+        Log.d("ahoy", mData.get(position).item_title);
+        /*
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.action_navigation_home_to_navigation_detail);
+                navController.navigate(R.id.action_navigation_dashboard_to_navigation_chat);
             }
-        });
+        });*/
     }
 
     @Override
