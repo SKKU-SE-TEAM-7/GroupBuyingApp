@@ -1,6 +1,8 @@
 package edu.skku.cs.groupbuying.ui.home;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,23 +24,31 @@ import edu.skku.cs.groupbuying.R;
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
     private ArrayList<ItemData> mData;
     private Activity mActivity;
+    private int mToken;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImage;
         public TextView mTitle;
+        public TextView mEmail;
+        public TextView mDate;
+        public TextView mLeft;
         public Button mJoin;
 
         ViewHolder(View itemView) {
             super(itemView) ;
             mImage = (ImageView) itemView.findViewById(R.id.item_image);
             mTitle = (TextView) itemView.findViewById(R.id.item_title);
+            mEmail = (TextView) itemView.findViewById(R.id.item_email);
+            mDate = (TextView) itemView.findViewById(R.id.item_date);
+            mLeft = (TextView) itemView.findViewById(R.id.item_left);
             mJoin = (Button) itemView.findViewById(R.id.join_button);
         }
     }
 
-    RecycleViewAdapter(ArrayList<ItemData> list, Activity activity) {
+    RecycleViewAdapter(ArrayList<ItemData> list, Activity activity, int token) {
         mData = list ;
         mActivity = activity;
+        mToken = token;
     }
 
     @Override
@@ -50,13 +61,21 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(RecycleViewAdapter.ViewHolder holder, int position) {
-        holder.mImage.setImageResource(mData.get(position).item_img);
+        holder.mImage.setImageResource(mData.get(position).item_image);
         holder.mTitle.setText(mData.get(position).item_title);
+        holder.mEmail.setText("작성자 "+mData.get(position).item_email);
+        holder.mDate.setText("마감일 "+mData.get(position).item_date);
+        holder.mLeft.setText(mData.get(position).item_left+"명 남았어요!");
+        final int id = mData.get(position).item_id;
+
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle result = new Bundle();
+                result.putInt("token", mToken);
+                result.putInt("content-id", id);
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.action_navigation_home_to_navigation_detail);
+                navController.navigate(R.id.action_navigation_home_to_navigation_detail, result);
             }
         });
     }

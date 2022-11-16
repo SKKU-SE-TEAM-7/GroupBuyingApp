@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import edu.skku.cs.groupbuying.ItemData;
+import edu.skku.cs.groupbuying.ChatData;
 import edu.skku.cs.groupbuying.R;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private ArrayList<ItemData> mData;
+    private ArrayList<ChatData> mData;
     private Activity mActivity;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -35,7 +35,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    RecyclerViewAdapter(ArrayList<ItemData> list, Activity activity) {
+    RecyclerViewAdapter(ArrayList<ChatData> list, Activity activity) {
         mData = list ;
         mActivity = activity;
 
@@ -68,7 +68,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mData.size() ;
     }
 
-    public void setItems(ArrayList<ItemData> list){
+    public void setItems(ArrayList<ChatData> list){
         mData = list;
         notifyDataSetChanged();
     }

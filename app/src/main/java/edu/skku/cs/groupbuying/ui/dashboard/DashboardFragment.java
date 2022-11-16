@@ -17,8 +17,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import edu.skku.cs.groupbuying.ChatData;
 import edu.skku.cs.groupbuying.HttpRequestGet;
-import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.networkobject.ResponseChatGetlist;
@@ -29,8 +29,8 @@ public class DashboardFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private FragmentDashboardBinding binding;
-    private ArrayList<ItemData> mData;
-    private ArrayList<ItemData> searchData = new ArrayList<>();
+    private ArrayList<ChatData> mData;
+    private ArrayList<ChatData> searchData = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initDataset() {
-        mData = new ArrayList<ItemData>();
+        mData = new ArrayList<ChatData>();
 
         HttpRequestGet request = new HttpRequestGet("/chat/getlist");
         request.addQueryParam("token", "1");
@@ -84,7 +84,7 @@ public class DashboardFragment extends Fragment {
         ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
 
         for (int i = 0; i < response.getChatlist().size(); i++) {
-            mData.add(new ItemData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(response.getChatlist().get(i).getChatid())));
+            mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(response.getChatlist().get(i).getChatid())));
         }
     }
 }
