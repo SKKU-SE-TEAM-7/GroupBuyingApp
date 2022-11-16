@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -52,8 +54,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mImage.setImageResource(mData.get(position).item_img);
         holder.mTitle.setText(mData.get(position).item_title);
-
-        Log.d("ahoy", mData.get(position).item_title);
+        holder.mJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.action_navigation_home_to_navigation_detail);
+            }
+        });
     }
 
     @Override

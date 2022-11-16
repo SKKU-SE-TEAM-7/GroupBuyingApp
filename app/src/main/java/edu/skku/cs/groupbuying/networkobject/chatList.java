@@ -1,4 +1,4 @@
-package edu.skku.cs.groupbuying;
+package edu.skku.cs.groupbuying.networkobject;
 
 import android.util.Log;
 
