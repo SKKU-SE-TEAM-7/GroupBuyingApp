@@ -1,11 +1,13 @@
 package edu.skku.cs.groupbuying;
 
 public class ChatData {
-    public int item_img;
-    public String item_title;
+    public int profile_img;
+    public String title;
+    public int chatid;
 
-    public ChatData(int item_img, String item_title) {
-        this.item_img = item_img;
-        this.item_title = item_title;
+    public ChatData(int item_img, String item_title, int chatid) {
+        this.profile_img = item_img;
+        this.title = item_title;
+        this.chatid = chatid;
     }
 }

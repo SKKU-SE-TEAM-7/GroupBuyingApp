@@ -1,6 +1,7 @@
 package edu.skku.cs.groupbuying.ui.dashboard;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,17 +51,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mImage.setImageResource(mData.get(position).item_img);
-        holder.mTitle.setText(mData.get(position).item_title);
-        Log.d("ahoy", mData.get(position).item_title);
-        /*
+        holder.mImage.setImageResource(mData.get(position).profile_img);
+        holder.mTitle.setText(mData.get(position).title);
+        int chatid = mData.get(position).chatid;
+        Log.d("ahoy", "chatid in rec: " + Integer.toString(chatid));
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("chat-id", chatid);
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.action_navigation_dashboard_to_navigation_chat);
+                navController.navigate(R.id.action_navigation_dashboard_to_navigation_chat, bundle);
             }
-        });*/
+        });
     }
 
     @Override
