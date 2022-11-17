@@ -1,5 +1,7 @@
 package edu.skku.cs.groupbuying.networkobject;
 
+import android.util.Log;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
@@ -55,5 +57,7 @@ public class chatInfo {
         }
         owner = jsonObject.get("owner").getAsString();
         participant = jsonObject.get("participant").getAsString();
+
+        Log.d("ahoy", "part: " + participant);
     }
 }

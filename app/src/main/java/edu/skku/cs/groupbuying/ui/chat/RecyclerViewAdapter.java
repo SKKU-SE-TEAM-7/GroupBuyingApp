@@ -18,32 +18,32 @@ import java.util.ArrayList;
 import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.R;
 
-public class RecyclerViewAdapter { //extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    /*
-    private ArrayList<ItemData> mData;
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+    private ArrayList<Chat> mData;
     private Activity mActivity;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView mProfile;
         public TextView mText;
-        public Button mSendBtn;
+        public TextView mTime;
 
         ViewHolder(View itemView) {
             super(itemView) ;
             mProfile = (ImageView) itemView.findViewById(R.id.chat_profile);
             mText = (TextView) itemView.findViewById(R.id.chat_text);
-            mSendBtn = (Button) itemView.findViewById(R.id.chat_sendbtn);
+            mTime = (TextView) itemView.findViewById(R.id.chat_time);
         }
     }
 
-    RecyclerViewAdapter(ArrayList<ItemData> list, Activity activity) {
+    RecyclerViewAdapter(ArrayList<Chat> list, Activity activity) {
+        Log.d("ahoy", "adapter: " + Integer.toString(list.size()));
         mData = list ;
         mActivity = activity;
     }
 
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_chatroom, parent, false) ;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_chat, parent, false) ;
         RecyclerViewAdapter.ViewHolder vh = new RecyclerViewAdapter.ViewHolder(view) ;
 
         return vh ;
@@ -51,15 +51,9 @@ public class RecyclerViewAdapter { //extends RecyclerView.Adapter<RecyclerViewAd
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mProfile.setImageResource(mData.get(position).item_img);
-        holder.mText.setText(mData.get(position).item_title);
-        holder.mSendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.action_navigation_home_to_navigation_detail);
-            }
-        });
+        holder.mProfile.setImageResource(mData.get(position).profile_img);
+        holder.mText.setText(mData.get(position).text);
+        holder.mTime.setText(mData.get(position).time);
     }
 
     @Override
@@ -67,9 +61,8 @@ public class RecyclerViewAdapter { //extends RecyclerView.Adapter<RecyclerViewAd
         return mData.size() ;
     }
 
-    public void setItems(ArrayList<ItemData> list){
+    public void setItems(ArrayList<Chat> list){
         mData = list;
         notifyDataSetChanged();
     }
-     */
 }
