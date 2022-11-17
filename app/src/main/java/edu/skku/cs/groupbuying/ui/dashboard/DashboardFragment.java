@@ -122,7 +122,8 @@ public class DashboardFragment extends Fragment {
 
                 for (int i = 0; i < response.getChatlist().size(); i++) {
                     int chatid = response.getChatlist().get(i).getChatid();
-                    mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(chatid), chatid));
+                    int contentid = response.getChatlist().get(i).getContentid();
+                    mData.add(new ChatData("chat id: " + Integer.toString(chatid), chatid, contentid));
                 }
 
                 countDownLatch.countDown();

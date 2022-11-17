@@ -14,6 +14,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import edu.skku.cs.groupbuying.ChatData;
@@ -51,7 +53,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mImage.setImageResource(mData.get(position).profile_img);
+        Glide.with(mActivity).load("https://" + mData.get(position).item_img).error(R.drawable.ic_baseline_image_24).into(holder.mImage);
+        //holder.mImage.setImageResource(R.drawable.ic_baseline_image_24);
         holder.mTitle.setText(mData.get(position).title);
         int chatid = mData.get(position).chatid;
         Log.d("ahoy", "chatid in rec: " + Integer.toString(chatid));
