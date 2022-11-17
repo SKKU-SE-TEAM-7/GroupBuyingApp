@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -66,7 +68,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final FloatingActionButton add = binding.addNew;
+        final ImageView add = binding.addNew;
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +77,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        final Button search = binding.search;
+        final ImageButton search = binding.search;
         final EditText search_space = binding.searchSpace;
         search.setOnClickListener(new View.OnClickListener() {
             @Override
