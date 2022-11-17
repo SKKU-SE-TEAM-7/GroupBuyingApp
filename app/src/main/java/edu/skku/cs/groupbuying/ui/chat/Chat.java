@@ -1,7 +1,7 @@
 package edu.skku.cs.groupbuying.ui.chat;
 
 public class Chat {
-    public int profile_img;
+    //public int profile_img;
     public String sender;
     public String text;
     public String time;

@@ -23,13 +23,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Activity mActivity;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mProfile;
+        //public ImageView mProfile;
+        public TextView mSender;
         public TextView mText;
         public TextView mTime;
 
         ViewHolder(View itemView) {
             super(itemView) ;
-            mProfile = (ImageView) itemView.findViewById(R.id.chat_profile);
+            //mProfile = (ImageView) itemView.findViewById(R.id.chat_profile);
+            mSender = (TextView) itemView.findViewById(R.id.chat_sender);
             mText = (TextView) itemView.findViewById(R.id.chat_text);
             mTime = (TextView) itemView.findViewById(R.id.chat_time);
         }
@@ -51,7 +53,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mProfile.setImageResource(mData.get(position).profile_img);
+        //holder.mProfile.setImageResource(mData.get(position).profile_img);
+        holder.mSender.setText(mData.get(position).sender);
         holder.mText.setText(mData.get(position).text);
         holder.mTime.setText(mData.get(position).time);
     }
