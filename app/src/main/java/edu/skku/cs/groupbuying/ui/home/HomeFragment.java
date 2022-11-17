@@ -1,6 +1,9 @@
 package edu.skku.cs.groupbuying.ui.home;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,7 +136,7 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         mData = new ArrayList<>();
                         for(int i=0; i<data.getList().length; i++){
-                            mData.add(new ItemData(data.getList()[i].getContent_id(), R.drawable.ic_baseline_image_24, data.getList()[i].getTitle(),
+                            mData.add(new ItemData(data.getList()[i].getContent_id(), data.getList()[i].getImage_url(), data.getList()[i].getTitle(),
                                     data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember())));
                         }
                         recyclerView = binding.recyclerView;
@@ -184,7 +187,7 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         mData = new ArrayList<>();
                         for(int i=0; i<data.getList().length; i++){
-                            mData.add(new ItemData(data.getList()[i].getContent_id(), R.drawable.ic_baseline_image_24, data.getList()[i].getTitle(),
+                            mData.add(new ItemData(data.getList()[i].getContent_id(), data.getList()[i].getImage_url(), data.getList()[i].getTitle(),
                                     data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember())));
                         }
                         recyclerView = binding.recyclerView;
@@ -206,6 +209,7 @@ public class HomeFragment extends Fragment {
 
 
     }
+
 
 
 }

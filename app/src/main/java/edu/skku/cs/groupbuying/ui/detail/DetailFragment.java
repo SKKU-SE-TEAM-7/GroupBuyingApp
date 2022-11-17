@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -132,6 +133,7 @@ public class DetailFragment extends Fragment {
                         final TextView detail_date = binding.detailDate;
                         final TextView detail_detail = binding.detailDetail;
 
+                        Glide.with(activity).load("https://"+data.getContent().getImage_url()).error(R.drawable.ic_baseline_image_24).into(detail_image);
                         detail_image.setImageResource(R.drawable.ic_baseline_image_24);
                         detail_title.setText(data.getContent().getTitle());
                         progressBar.setMax(data.getContent().getTargetMember());
