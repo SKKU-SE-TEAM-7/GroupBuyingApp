@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
 import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.ItemData;
@@ -118,10 +119,13 @@ public class HomeFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -152,9 +156,16 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+                countDownLatch.countDown();
 
             }
         });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -169,10 +180,13 @@ public class HomeFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -203,12 +217,15 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
-
-
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 

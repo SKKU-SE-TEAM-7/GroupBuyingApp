@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class RegisterFragment extends Fragment {
 
@@ -117,10 +118,13 @@ public class RegisterFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -146,10 +150,15 @@ public class RegisterFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void register_to_server(EditText verify_code, EditText email, EditText password, EditText nickname){
@@ -171,10 +180,13 @@ public class RegisterFragment extends Fragment {
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"),postData))
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -201,8 +213,15 @@ public class RegisterFragment extends Fragment {
                         }
                     }
                 });
+                countDownLatch.countDown();
             }
         });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static byte[] CreateQuery(List<Pair> pairs, String charset) {

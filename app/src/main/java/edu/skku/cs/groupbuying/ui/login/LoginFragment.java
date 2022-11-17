@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class LoginFragment extends Fragment {
 
@@ -99,10 +100,13 @@ public class LoginFragment extends Fragment {
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"),postData))
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -131,9 +135,15 @@ public class LoginFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static byte[] CreateQuery(List<Pair> pairs, String charset) {
