@@ -34,6 +34,7 @@ public class chatList {
     }
 
     public chatList(JsonObject jsonObject) {
+        Log.d("ahoy", "??? : " + jsonObject.get("owner").getAsString());
         setChatid(jsonObject.get("chat-id").getAsInt());
         setOwner(jsonObject.get("owner").getAsString());
         setParticipant(jsonObject.get("participant").getAsString());

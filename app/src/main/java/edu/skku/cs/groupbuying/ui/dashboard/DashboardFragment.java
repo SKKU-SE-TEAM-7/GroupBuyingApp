@@ -18,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import edu.skku.cs.groupbuying.ChatData;
 import edu.skku.cs.groupbuying.GlobalObject;
@@ -106,9 +107,11 @@ public class DashboardFragment extends Fragment {
         String url = urlBuilder.build().toString();
         Request req = new Request.Builder().url(url).build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) { }
+            public void onFailure(@NonNull Call call, @NonNull IOException e) { countDownLatch.countDown(); }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
@@ -118,12 +121,21 @@ public class DashboardFragment extends Fragment {
                 ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
 
                 for (int i = 0; i < response.getChatlist().size(); i++) {
-                    mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(response.getChatlist().get(i).getChatid())));
+                    int chatid = response.getChatlist().get(i).getChatid();
+                    mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(chatid), chatid));
                 }
+
+                countDownLatch.countDown();
             }
         });
 
-        mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: test"));
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: test", 123));
         Log.d("ahoy", "end of initdataset");
     }
 }

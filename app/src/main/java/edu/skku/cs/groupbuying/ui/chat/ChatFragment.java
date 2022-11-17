@@ -1,11 +1,13 @@
 package edu.skku.cs.groupbuying.ui.chat;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,72 +18,58 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import edu.skku.cs.groupbuying.ItemData;
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
+import edu.skku.cs.groupbuying.databinding.FragmentChatBinding;
 import edu.skku.cs.groupbuying.databinding.FragmentHomeBinding;
+import edu.skku.cs.groupbuying.networkobject.ResponseChatGetchat;
+import edu.skku.cs.groupbuying.networkobject.ResponseChatGetlist;
+import edu.skku.cs.groupbuying.networkobject.chat;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class ChatFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    //private FragmentChatBinding binding;
-    private ArrayList<ItemData> mData;
-    private ArrayList<ItemData> searchData = new ArrayList<>();
-
-    /*
+    private FragmentChatBinding binding;
+    private ArrayList<Chat> mData;
+    private int chatid;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initDataset();
+        init();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        ChatViewModel homeViewModel =
+                new ViewModelProvider(this).get(ChatViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final FloatingActionButton add = binding.addNew;
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.HomeToCreate();
-            }
-        });
+        TextView chat_title = binding.chatTitle;
+        chat_title.setText(Integer.toString(chatid));
 
-        final Button search = binding.search;
-        final EditText search_space = binding.searchSpace;
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchData.clear();
-                String input = search_space.getText().toString().toLowerCase().replaceAll("\\s", "");
-                for(int i = 0; i < mData.size(); i++){
-                    if(mData.get(i).item_title.toLowerCase().replaceAll("\\s", "").contains(input)){
-                        searchData.add(mData.get(i));
-                    }
-                }
-                adapter.setItems(searchData);
-            }
-        });
-
-
+        /*
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecycleViewAdapter(mData, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         DividerItemDecoration dividerDecoration =
                 new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-        recyclerView.addItemDecoration(dividerDecoration);
+        recyclerView.addItemDecoration(dividerDecoration);*/
 
 
         hideBottomNavigation(false);
@@ -102,16 +90,37 @@ public class ChatFragment extends Fragment {
             bottomNavigation.setVisibility(View.VISIBLE);
     }
 
-    private void initDataset() {
-        ////////////////////////////테스트 중 원래 api 필요
-        mData = new ArrayList<ItemData>();
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "과자 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "콜라 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "당근 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "펩시 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "과잠 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "컴퓨터 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "노트북 공구"));
-        mData.add(new ItemData(R.drawable.ic_baseline_image_24, "공동구매"));
-    }*/
+    private void init() {
+        Log.d("ahoy", "chatfrag init");
+        Bundle bundle = getArguments();
+        chatid = bundle.getInt("chat-id");
+        Log.d("ahoy", "chatfrag init chatid: " + Integer.toString((chatid)));
+
+        final String server_adrs = "http://52.78.137.254:8080";
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(server_adrs + "/chat/getchat").newBuilder();
+        urlBuilder.addQueryParameter("token", Integer.toString(GlobalObject.getToken()));
+        urlBuilder.addQueryParameter("chat-id", Integer.toString(chatid));
+        String url = urlBuilder.build().toString();
+        Request req = new Request.Builder().url(url).build();
+
+        client.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) { }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
+                String responseStr = resp.body().string();
+                Log.d("ahoy", "onresp: " + responseStr);
+
+                ResponseChatGetchat response = new ResponseChatGetchat(responseStr);
+
+                for (int i = 0; i < response.getChatinfo().getChats().size(); i++) {
+                    chat ch = response.getChatinfo().getChats().get(i);
+
+                    mData.add(new Chat(ch.getSender(), ch.getText(), ch.getTime()));
+                }
+            }
+        });
+    }
 }
