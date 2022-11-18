@@ -43,14 +43,12 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("ahoy", "start of oncreate");
         super.onCreate(savedInstanceState);
         initDataset();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Log.d("ahoy", "start of oncreateview");
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
@@ -66,8 +64,6 @@ public class DashboardFragment extends Fragment {
         DividerItemDecoration dividerDecoration =
                 new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
         recyclerView.addItemDecoration(dividerDecoration);
-
-        Log.d("ahoy", "end of oncreateview");
 
         hideBottomNavigation(false);
         return root;
@@ -85,7 +81,6 @@ public class DashboardFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         //binding = null;
-        Log.d("ahoy", "ondestroyview");
     }
 
     public void hideBottomNavigation(Boolean bool) {
@@ -97,7 +92,6 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initDataset() {
-        Log.d("ahoy", "start of initdataset");
         mData = new ArrayList<ChatData>();
 
         final String server_adrs = "http://52.78.137.254:8080";
@@ -116,7 +110,6 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
                 String responseStr = resp.body().string();
-                Log.d("ahoy", "onresp: " + responseStr);
 
                 ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
 
@@ -137,6 +130,5 @@ public class DashboardFragment extends Fragment {
         }
 
         //mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: test", 123));
-        Log.d("ahoy", "end of initdataset");
     }
 }

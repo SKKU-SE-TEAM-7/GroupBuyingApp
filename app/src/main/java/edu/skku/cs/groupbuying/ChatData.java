@@ -38,8 +38,6 @@ public class ChatData {
         String url = urlBuilder.build().toString();
         Request req = new Request.Builder().url(url).build();
 
-        Log.d("ahoy", "in chatdata");
-
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         client.newCall(req).enqueue(new Callback() {
