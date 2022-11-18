@@ -8,6 +8,7 @@ public class chatList {
     private int chatid;
     private String owner;
     private String participant;
+    private int contentid;
 
     public int getChatid() {
         return chatid;
@@ -33,9 +34,13 @@ public class chatList {
         this.participant = participant;
     }
 
+    public int getContentid() { return contentid; }
+    public void setContentid(int contentid) { this.contentid = contentid; }
+
     public chatList(JsonObject jsonObject) {
         setChatid(jsonObject.get("chat-id").getAsInt());
         setOwner(jsonObject.get("owner").getAsString());
         setParticipant(jsonObject.get("participant").getAsString());
+        setContentid(jsonObject.get("content-id").getAsInt());
     }
 }

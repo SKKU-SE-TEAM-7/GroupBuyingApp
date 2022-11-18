@@ -15,6 +15,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import edu.skku.cs.groupbuying.ItemData;
@@ -61,7 +63,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(RecycleViewAdapter.ViewHolder holder, int position) {
-        holder.mImage.setImageResource(mData.get(position).item_image);
+        holder.mImage.setClipToOutline(true);
+        Glide.with(mActivity).load("https://"+mData.get(position).item_image).error(R.drawable.ic_baseline_image_24).into(holder.mImage);
         holder.mTitle.setText(mData.get(position).item_title);
         holder.mEmail.setText("작성자 "+mData.get(position).item_email);
         holder.mDate.setText("마감일 "+mData.get(position).item_date);
@@ -89,4 +92,5 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         mData = list;
         notifyDataSetChanged();
     }
+
 }

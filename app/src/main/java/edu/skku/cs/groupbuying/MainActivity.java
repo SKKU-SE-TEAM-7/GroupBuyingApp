@@ -64,5 +64,13 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.action_navigation_home_to_navigation_create, result);
     }
 
+    public void CreateToHome(int token){
+        Bundle result = new Bundle();
+        result.putInt("token", token);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.action_navigation_create_to_navigation_home, result);
+    }
+
+
 
 }

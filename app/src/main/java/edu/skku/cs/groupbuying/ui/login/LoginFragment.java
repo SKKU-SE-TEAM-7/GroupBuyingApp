@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.databinding.FragmentLoginBinding;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class LoginFragment extends Fragment {
 
@@ -98,10 +100,13 @@ public class LoginFragment extends Fragment {
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"),postData))
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -118,7 +123,9 @@ public class LoginFragment extends Fragment {
                     public void run() {
                         if(code == 200){
                             MainActivity activity = (MainActivity) getActivity();
-                            activity.LoginToHome(data.getToken());
+                            int token = data.getToken();
+                            GlobalObject.setToken(token);
+                            activity.LoginToHome(token);
                         }
                         else{
                             Toast toast=Toast.makeText(getContext(),"유효하지 않은 비밀번호입니다",Toast.LENGTH_SHORT);
@@ -128,9 +135,15 @@ public class LoginFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static byte[] CreateQuery(List<Pair> pairs, String charset) {

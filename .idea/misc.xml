@@ -3,18 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/button_round.xml" value="0.1" />
+        <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/edge.xml" value="0.2035" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.2065" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.2065" />
+        <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2065" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2065" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2065" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.2065" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/progressbar_progressbar1.xml" value="0.1" />
+        <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/drawable/rounded_image.xml" value="0.2265" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_create.xml" value="0.2056159420289855" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_dashboard.xml" value="0.2210144927536232" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_detail.xml" value="0.264" />
-        <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_home.xml" value="0.2210144927536232" />
+        <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_login.xml" value="0.2210144927536232" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_notifications.xml" value="0.2210144927536232" />
         <entry key="..\:/software_project/GroupBuyingApp/app/src/main/res/layout/fragment_register.xml" value="0.25364583333333335" />

@@ -37,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="TextView"
+        android:hint="보낼 메시지를 입력하세요"
 
         app:layout_constraintEnd_toStartOf="@id/chat_sendbtn"
         app:layout_constraintHorizontal_bias="0.0"

@@ -1,5 +1,7 @@
 package edu.skku.cs.groupbuying.networkobject;
 
+import android.util.Log;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -9,6 +11,14 @@ import java.util.ArrayList;
 
 public class ResponseChatGetchat {
     private chatInfo chatinfo;
+
+    public chatInfo getChatinfo() {
+        return chatinfo;
+    }
+
+    public void setChatinfo(chatInfo chatinfo) {
+        this.chatinfo = chatinfo;
+    }
 
     public ResponseChatGetchat(String json) {
         JsonElement element = JsonParser.parseString(json);

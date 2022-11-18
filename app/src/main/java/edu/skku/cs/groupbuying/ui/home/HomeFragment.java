@@ -1,12 +1,17 @@
 package edu.skku.cs.groupbuying.ui.home;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +30,9 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
@@ -62,7 +69,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final FloatingActionButton add = binding.addNew;
+        final ImageView add = binding.addNew;
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +78,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        final Button search = binding.search;
+        final ImageButton search = binding.search;
         final EditText search_space = binding.searchSpace;
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +86,6 @@ public class HomeFragment extends Fragment {
                 search_item(search_space);
             }
         });
-
-
 
         hideBottomNavigation(false);
         return root;
@@ -114,10 +119,13 @@ public class HomeFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -134,7 +142,7 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         mData = new ArrayList<>();
                         for(int i=0; i<data.getList().length; i++){
-                            mData.add(new ItemData(data.getList()[i].getContent_id(), R.drawable.ic_baseline_image_24, data.getList()[i].getTitle(),
+                            mData.add(new ItemData(data.getList()[i].getContent_id(), data.getList()[i].getImage_url(), data.getList()[i].getTitle(),
                                     data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember())));
                         }
                         recyclerView = binding.recyclerView;
@@ -148,9 +156,16 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+                countDownLatch.countDown();
 
             }
         });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -165,10 +180,13 @@ public class HomeFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -185,7 +203,7 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         mData = new ArrayList<>();
                         for(int i=0; i<data.getList().length; i++){
-                            mData.add(new ItemData(data.getList()[i].getContent_id(), R.drawable.ic_baseline_image_24, data.getList()[i].getTitle(),
+                            mData.add(new ItemData(data.getList()[i].getContent_id(), data.getList()[i].getImage_url(), data.getList()[i].getTitle(),
                                     data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember())));
                         }
                         recyclerView = binding.recyclerView;
@@ -199,14 +217,18 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
-
-
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
+
 
 
 }

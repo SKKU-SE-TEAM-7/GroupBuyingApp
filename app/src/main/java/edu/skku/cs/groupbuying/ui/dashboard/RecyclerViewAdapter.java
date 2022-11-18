@@ -1,6 +1,7 @@
 package edu.skku.cs.groupbuying.ui.dashboard;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -38,8 +41,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     RecyclerViewAdapter(ArrayList<ChatData> list, Activity activity) {
         mData = list ;
         mActivity = activity;
-
-        Log.d("ahoy", mData.get(0).item_title);
     }
 
     @Override
@@ -52,13 +53,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mImage.setImageResource(mData.get(position).item_img);
-        holder.mTitle.setText(mData.get(position).item_title);
+        Glide.with(mActivity).load("https://" + mData.get(position).item_img).error(R.drawable.ic_baseline_image_24).into(holder.mImage);
+        //holder.mImage.setImageResource(R.drawable.ic_baseline_image_24);
+        holder.mTitle.setText(mData.get(position).title);
+        int chatid = mData.get(position).chatid;
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("chat-id", chatid);
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.action_navigation_home_to_navigation_detail);
+                navController.navigate(R.id.action_navigation_dashboard_to_navigation_chat, bundle);
             }
         });
     }

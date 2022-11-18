@@ -12,7 +12,7 @@ public class DetailDataModel {
 
     private int currentMember;
     private String detail;
-    private String dueDate;
+    private String duedate;
 
     @SerializedName("image-url")
     private String image_url;
@@ -43,7 +43,7 @@ public class DetailDataModel {
     }
 
     public String getDueDate() {
-        return dueDate;
+        return duedate;
     }
 
     public String getOwner() {

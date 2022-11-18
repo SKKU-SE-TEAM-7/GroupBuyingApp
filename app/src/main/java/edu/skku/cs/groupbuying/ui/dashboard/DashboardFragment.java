@@ -16,22 +16,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import edu.skku.cs.groupbuying.ChatData;
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.HttpRequestGet;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.networkobject.ResponseChatGetlist;
 import edu.skku.cs.groupbuying.databinding.FragmentDashboardBinding;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class DashboardFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private FragmentDashboardBinding binding;
-    private ArrayList<ChatData> mData;
-    private ArrayList<ChatData> searchData = new ArrayList<>();
+    private ArrayList<ChatData> mData = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +52,7 @@ public class DashboardFragment extends Fragment {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
-        initDataset();
+        //initDataset();
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -61,10 +69,18 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
+    /*
+    @Override
+    public void onResume() {
+        Log.d("ahoy", "onresume");
+        super.onResume();
+        //initDataset();
+    }*/
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        //binding = null;
     }
 
     public void hideBottomNavigation(Boolean bool) {
@@ -78,16 +94,41 @@ public class DashboardFragment extends Fragment {
     private void initDataset() {
         mData = new ArrayList<ChatData>();
 
-        HttpRequestGet request = new HttpRequestGet("/chat/getlist");
-        request.addQueryParam("token", "99449814");
-        String responseStr = request.sendRequest();
+        final String server_adrs = "http://52.78.137.254:8080";
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(server_adrs + "/chat/getlist").newBuilder();
+        urlBuilder.addQueryParameter("token", Integer.toString(GlobalObject.getToken()));
+        String url = urlBuilder.build().toString();
+        Request req = new Request.Builder().url(url).build();
 
-        ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        for (int i = 0; i < response.getChatlist().size(); i++) {
-            mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: " + Integer.toString(response.getChatlist().get(i).getChatid())));
+        client.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) { countDownLatch.countDown(); }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
+                String responseStr = resp.body().string();
+
+                ResponseChatGetlist response = new ResponseChatGetlist(responseStr);
+
+                for (int i = 0; i < response.getChatlist().size(); i++) {
+                    int chatid = response.getChatlist().get(i).getChatid();
+                    int contentid = response.getChatlist().get(i).getContentid();
+                    mData.add(new ChatData("chat id: " + Integer.toString(chatid), chatid, contentid));
+                }
+
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        Log.d("ahoy", responseStr);
+        //mData.add(new ChatData(R.drawable.ic_baseline_image_24, "chat id: test", 123));
     }
 }
