@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="132dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -11,9 +11,8 @@
 
                 <ImageView
                     android:id="@+id/item_image"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:background="@drawable/rounded_image"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +21,27 @@
 
                 <TextView
                     android:id="@+id/item_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
                     android:text="생수 1.5L 6병 공동 구매"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/item_image"
                     app:layout_constraintTop_toTopOf="@+id/item_image" />
+
+                <TextView
+                    android:id="@+id/item_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
+                    android:text="마감일 2022-12-31"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/join_button"
+                    app:layout_constraintStart_toEndOf="@+id/item_image"
+                    app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
                 <Button
                     android:id="@+id/join_button"
@@ -38,35 +50,35 @@
                     android:background="#00ff0000"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
-                <TextView
-                    android:id="@+id/item_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="작성자 boy980705@g.skku.edu"
-                    app:layout_constraintBottom_toTopOf="@+id/item_date"
+                <ProgressBar
+                    android:id="@+id/item_progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:max="100"
+                    android:progress="25"
+                    android:progressDrawable="@drawable/progressbar_progressbar1"
                     app:layout_constraintStart_toEndOf="@+id/item_image"
-                    app:layout_constraintTop_toBottomOf="@+id/item_title" />
-
-                <TextView
-                    android:id="@+id/item_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="마감일 2022-12-31"
-                    app:layout_constraintBottom_toTopOf="@+id/item_left"
-                    app:layout_constraintStart_toStartOf="@+id/item_email"
-                    app:layout_constraintTop_toBottomOf="@+id/item_email" />
+                    app:layout_constraintTop_toBottomOf="@+id/item_date" />
 
                 <TextView
                     android:id="@+id/item_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
                     android:text="2명 남았어요!"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/item_date"
-                    app:layout_constraintTop_toBottomOf="@+id/item_date" />
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/item_image"
+                    app:layout_constraintTop_toBottomOf="@+id/item_progressBar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -71,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.action_navigation_create_to_navigation_home, result);
     }
 
+    public void DetailToChat(int chat_id){
+        Bundle result = new Bundle();
+        result.putInt("chat-id", chat_id);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.action_navigation_detail_to_navigation_chat, result);
+    }
+
 
 
 }

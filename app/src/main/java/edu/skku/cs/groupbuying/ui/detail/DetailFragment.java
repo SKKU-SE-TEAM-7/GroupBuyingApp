@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,6 +41,10 @@ public class DetailFragment extends Fragment {
     private int token;
     private int id;
     private FragmentDetailBinding binding;
+    public String img_url;
+    public int chat_id;
+    public boolean user_join;
+    public boolean open = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,9 +62,31 @@ public class DetailFragment extends Fragment {
         binding = FragmentDetailBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final Button detail_join = binding.detailJoin;
-        final Button detail_chat = binding.detailChat;
-        final Button detail_exit = binding.detailExit;
+        final FloatingActionButton show = binding.show;
+        final ExtendedFloatingActionButton detail_join = binding.detailJoin;
+        final ExtendedFloatingActionButton detail_chat = binding.detailChat;
+        final ExtendedFloatingActionButton detail_exit = binding.detailExit;
+
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!open){
+                    detail_join.setVisibility(View.VISIBLE);
+                    detail_chat.setVisibility(View.VISIBLE);
+                    detail_exit.setVisibility(View.VISIBLE);
+                    show.setImageResource(R.drawable.ic_baseline_close_24);
+                    open = true;
+                }
+                else{
+                    detail_join.setVisibility(View.GONE);
+                    detail_chat.setVisibility(View.GONE);
+                    detail_exit.setVisibility(View.GONE);
+                    show.setImageResource(R.drawable.ic_baseline_add_24);
+                    open = false;
+                }
+
+            }
+        });
 
         detail_join.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +98,14 @@ public class DetailFragment extends Fragment {
         detail_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(user_join){
+                    MainActivity activity = (MainActivity) getActivity();
+                    activity.DetailToChat(chat_id);
+                }
+                else{
+                    Toast toast=Toast.makeText(getContext(),"아직 공동구매에 참가하지 않았거나 확인할 수가 없습니다",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
 
             }
         });
@@ -120,7 +158,8 @@ public class DetailFragment extends Fragment {
 
                 Gson gson = new GsonBuilder().create();
                 final ContentModel data = gson.fromJson(myResponse, ContentModel.class);
-
+                img_url = "https://"+data.getContent().getImage_url();
+                chat_id = data.getContent().getChat_id();
 
                 MainActivity activity = (MainActivity) getActivity();
                 activity.runOnUiThread(new Runnable() {
@@ -133,14 +172,13 @@ public class DetailFragment extends Fragment {
                         final TextView detail_date = binding.detailDate;
                         final TextView detail_detail = binding.detailDetail;
 
-                        Glide.with(activity).load("https://"+data.getContent().getImage_url()).error(R.drawable.ic_baseline_image_24).into(detail_image);
-                        detail_image.setImageResource(R.drawable.ic_baseline_image_24);
+                        Glide.with(activity).load(img_url).error(R.drawable.ic_baseline_image_24).into(detail_image);
                         detail_title.setText(data.getContent().getTitle());
                         progressBar.setMax(data.getContent().getTargetMember());
                         progressBar.setProgress(data.getContent().getCurrentMember());
                         detail_member.setText(data.getContent().getCurrentMember()+"명 참여 / "+data.getContent().getTargetMember()+"명 목표");
-                        detail_date.setText("마감기간 : "+data.getContent().getDueDate());
-                        detail_detail.setText("상품 설명 / 공동구매 진행 안내\n"+data.getContent().getDetail());
+                        detail_date.setText(data.getContent().getDueDate()+" 종료");
+                        detail_detail.setText("상품 설명 / 공동구매 진행 안내\n\n"+data.getContent().getDetail());
 
                         getHost(data.getContent().getOwner());
                     }
@@ -183,9 +221,11 @@ public class DetailFragment extends Fragment {
                     public void run() {
                         final TextView detail_nickname = binding.detailNickname;
                         final TextView detail_star = binding.detailStar;
+                        final RatingBar detail_rate = binding.ratingBar;
 
-                        detail_nickname.setText("주선자 : "+data.getUser_info().getNickname());
-                        detail_star.setText("이용자 평점 : "+data.getUser_info().getStar()+" / 5");
+                        detail_nickname.setText(data.getUser_info().getNickname());
+                        detail_rate.setRating(data.getUser_info().getStar());
+                        detail_star.setText("평가 "+data.getUser_info().getStar()+" / 5");
                     }
                 });
 
@@ -228,6 +268,7 @@ public class DetailFragment extends Fragment {
                         if(code == 200){
                             Toast toast=Toast.makeText(getContext(),"공동구매 참가 완료",Toast.LENGTH_SHORT);
                             toast.show();
+                            user_join = true;
                         }
                         else{
                             if(data.getMessage().equals("wrong content id")){
@@ -243,11 +284,10 @@ public class DetailFragment extends Fragment {
                                 toast.show();
                             }
                         }
-                        init();
 
                     }
                 });
-
+                init();
 
             }
         });
@@ -287,6 +327,7 @@ public class DetailFragment extends Fragment {
                         if(code == 200){
                             Toast toast=Toast.makeText(getContext(),"공동구매 탈퇴 완료",Toast.LENGTH_SHORT);
                             toast.show();
+                            user_join = false;
                         }
                         else{
                             if(data.getMessage().equals("wrong content id")){
@@ -298,10 +339,10 @@ public class DetailFragment extends Fragment {
                                 toast.show();
                             }
                         }
-                        init();
 
                     }
                 });
+                init();
 
 
             }

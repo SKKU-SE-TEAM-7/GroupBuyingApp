@@ -34,22 +34,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_space" />
-
-    <ImageView
-        android:id="@+id/add_New"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/white"
-        android:clickable="true"
-        android:src="@drawable/add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <View
         android:id="@+id/divider5"
@@ -63,6 +54,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_space" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_New"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/purple_500"
+        android:clickable="true"
+        android:src="@drawable/ic_baseline_post_add_24"
+        app:borderWidth="0dp"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp"
+        app:tint="@null" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

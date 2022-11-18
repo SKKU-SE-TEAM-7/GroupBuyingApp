@@ -45,7 +45,11 @@
         android:id="@+id/navigation_detail"
         android:name="edu.skku.cs.groupbuying.ui.detail.DetailFragment"
         android:label="@string/title_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_navigation_detail_to_navigation_chat"
+            app:destination="@id/navigation_chat" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_create"

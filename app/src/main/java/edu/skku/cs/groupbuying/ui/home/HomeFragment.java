@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final ImageView add = binding.addNew;
+        final FloatingActionButton add = binding.addNew;
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +143,8 @@ public class HomeFragment extends Fragment {
                         mData = new ArrayList<>();
                         for(int i=0; i<data.getList().length; i++){
                             mData.add(new ItemData(data.getList()[i].getContent_id(), data.getList()[i].getImage_url(), data.getList()[i].getTitle(),
-                                    data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember())));
+                                    data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember()),
+                                    data.getList()[i].getCurrentMember(), data.getList()[i].getTargetMember()));
                         }
                         recyclerView = binding.recyclerView;
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -204,7 +205,8 @@ public class HomeFragment extends Fragment {
                         mData = new ArrayList<>();
                         for(int i=0; i<data.getList().length; i++){
                             mData.add(new ItemData(data.getList()[i].getContent_id(), data.getList()[i].getImage_url(), data.getList()[i].getTitle(),
-                                    data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember())));
+                                    data.getList()[i].getOwner(), data.getList()[i].getDueDate(), (data.getList()[i].getTargetMember()-data.getList()[i].getCurrentMember()),
+                                    data.getList()[i].getCurrentMember(), data.getList()[i].getTargetMember()));
                         }
                         recyclerView = binding.recyclerView;
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
