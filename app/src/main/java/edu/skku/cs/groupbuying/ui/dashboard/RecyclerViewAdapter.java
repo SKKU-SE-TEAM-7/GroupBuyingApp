@@ -57,7 +57,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //holder.mImage.setImageResource(R.drawable.ic_baseline_image_24);
         holder.mTitle.setText(mData.get(position).title);
         int chatid = mData.get(position).chatid;
-        Log.d("ahoy", "chatid in rec: " + Integer.toString(chatid));
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
