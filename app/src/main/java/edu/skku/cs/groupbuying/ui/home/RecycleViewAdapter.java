@@ -63,6 +63,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(RecycleViewAdapter.ViewHolder holder, int position) {
+        holder.mImage.setClipToOutline(true);
         Glide.with(mActivity).load("https://"+mData.get(position).item_image).error(R.drawable.ic_baseline_image_24).into(holder.mImage);
         holder.mTitle.setText(mData.get(position).item_title);
         holder.mEmail.setText("작성자 "+mData.get(position).item_email);
