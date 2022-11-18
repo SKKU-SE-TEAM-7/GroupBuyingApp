@@ -37,7 +37,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             super(itemView) ;
             mImage = (ImageView) itemView.findViewById(R.id.item_image);
             mTitle = (TextView) itemView.findViewById(R.id.item_title);
-            mEmail = (TextView) itemView.findViewById(R.id.item_email);
+            //mEmail = (TextView) itemView.findViewById(R.id.item_email);
             mDate = (TextView) itemView.findViewById(R.id.item_date);
             mLeft = (TextView) itemView.findViewById(R.id.item_left);
             mJoin = (Button) itemView.findViewById(R.id.join_button);
@@ -62,7 +62,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(RecycleViewAdapter.ViewHolder holder, int position) {
         Glide.with(mActivity).load("https://"+mData.get(position).item_image).error(R.drawable.ic_baseline_image_24).into(holder.mImage);
         holder.mTitle.setText(mData.get(position).item_title);
-        holder.mEmail.setText("작성자 "+mData.get(position).item_email);
+        //holder.mEmail.setText("작성자 "+mData.get(position).item_email);
         holder.mDate.setText("마감일 "+mData.get(position).item_date);
         holder.mLeft.setText(mData.get(position).item_left+"명 남았어요!");
         final int id = mData.get(position).item_id;

@@ -138,7 +138,8 @@ public class NotificationsFragment extends Fragment {
 
                                 Log.d("finish", Integer.toString(data2.getContent().getContent_id()));
                                 mData.add(new ItemData(data2.getContent().getContent_id(), data2.getContent().getImage_url(), data2.getContent().getTitle(),
-                                        data2.getContent().getOwner(), data2.getContent().getDueDate(), (data2.getContent().getTargetMember() - data2.getContent().getCurrentMember())));
+                                        data2.getContent().getOwner(), data2.getContent().getDueDate(), (data2.getContent().getTargetMember() - data2.getContent().getCurrentMember()),
+                                        data2.getContent().getCurrentMember(), data2.getContent().getTargetMember()));
                                 MainActivity activity = (MainActivity) getActivity();
                                 activity.runOnUiThread(new Runnable() {
                                     @Override
