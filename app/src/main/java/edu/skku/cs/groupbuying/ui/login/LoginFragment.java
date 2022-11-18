@@ -124,6 +124,7 @@ public class LoginFragment extends Fragment {
                         if(code == 200){
                             MainActivity activity = (MainActivity) getActivity();
                             int token = data.getToken();
+                            GlobalObject.setEmail(email.getText().toString());
                             GlobalObject.setToken(token);
                             activity.LoginToHome(token);
                         }
