@@ -59,7 +59,8 @@
                 android:layout_weight="1"
                 android:layout_marginRight="20dp"
                 android:textAlignment="textEnd"
-                android:hint="명" />
+                android:hint="명"
+                android:inputType="number"/>
         </LinearLayout>
 
         <LinearLayout
