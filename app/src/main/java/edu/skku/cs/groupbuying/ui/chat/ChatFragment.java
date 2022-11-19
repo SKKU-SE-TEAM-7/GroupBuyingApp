@@ -173,11 +173,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
                 String responseStr = resp.body().string();
-                Log.d("ahoy", "onresp: " + responseStr);
 
                 ResponseChatGetchat response = new ResponseChatGetchat(responseStr);
-
-                Log.d("ahoy", "after onresp " + response.getChatinfo().getChats().size());
 
                 for (int i = 0; i < response.getChatinfo().getChats().size(); i++) {
                     chat ch = response.getChatinfo().getChats().get(i);
@@ -191,9 +188,7 @@ public class ChatFragment extends Fragment {
 
         try {
             countDownLatch.await();
-            Log.d("ahoy", "await");
         } catch (InterruptedException e) {
-            Log.d("ahoy", "catch");
             e.printStackTrace();
         }
     }

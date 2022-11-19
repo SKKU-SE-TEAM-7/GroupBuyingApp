@@ -25,7 +25,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.databinding.FragmentDetailBinding;
@@ -49,7 +51,10 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+
+        // Bundle bundle = getArguments();
+
+//        init();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -117,22 +122,18 @@ public class DetailFragment extends Fragment {
             }
         });
 
-
-
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        //binding = null;
     }
 
-    public void init(){
-        Bundle bundle = getArguments();
-        token = bundle.getInt("token");
-        id = bundle.getInt("content-id");
-
+    public void init() {
+        token = GlobalObject.getToken();
+        id = GlobalObject.getContentid();
 
         OkHttpClient client = new OkHttpClient();
 
@@ -145,10 +146,13 @@ public class DetailFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -184,10 +188,15 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getHost(String email){
@@ -201,10 +210,13 @@ public class DetailFragment extends Fragment {
                 .url(url1)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client1.newCall(req1).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -229,10 +241,15 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void user_join(){
@@ -247,10 +264,13 @@ public class DetailFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -287,11 +307,17 @@ public class DetailFragment extends Fragment {
 
                     }
                 });
-                init();
 
+                init();
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void user_exit(){
@@ -306,10 +332,12 @@ public class DetailFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -343,12 +371,16 @@ public class DetailFragment extends Fragment {
                     }
                 });
                 init();
-
+                countDownLatch.countDown();
 
             }
         });
 
-
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
