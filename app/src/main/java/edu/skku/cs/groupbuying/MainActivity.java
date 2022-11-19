@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_login, R.id.navigation_register, R.id.navigation_home, R.id.navigation_detail, R.id.navigation_create, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_login, R.id.navigation_register, R.id.navigation_home, R.id.navigation_detail, R.id.navigation_create, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_chat, R.id.navigation_review)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -71,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.action_navigation_create_to_navigation_home, result);
     }
 
-    public void DetailToChat(int chat_id){
+    public void DetailToChat(int chat_id, int content_id){
         Bundle result = new Bundle();
         result.putInt("chat-id", chat_id);
+        result.putInt("content-id", content_id);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         navController.navigate(R.id.action_navigation_detail_to_navigation_chat, result);
     }

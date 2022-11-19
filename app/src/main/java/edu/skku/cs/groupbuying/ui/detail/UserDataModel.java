@@ -2,13 +2,13 @@ package edu.skku.cs.groupbuying.ui.detail;
 
 public class UserDataModel {
     private String nickname;
-    private int star;
+    private float star;
 
     public String getNickname() {
         return nickname;
     }
 
     public int getStar() {
-        return star;
+        return (int)star;
     }
 }

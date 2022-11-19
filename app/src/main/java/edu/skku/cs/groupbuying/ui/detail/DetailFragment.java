@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Priority;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,7 +26,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
 import edu.skku.cs.groupbuying.databinding.FragmentDetailBinding;
@@ -45,11 +48,15 @@ public class DetailFragment extends Fragment {
     public int chat_id;
     public boolean user_join;
     public boolean open = false;
+    public String owner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+
+        // Bundle bundle = getArguments();
+
+//        init();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -99,8 +106,9 @@ public class DetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(user_join){
+                    GlobalObject.setReview_host_email(owner);
                     MainActivity activity = (MainActivity) getActivity();
-                    activity.DetailToChat(chat_id);
+                    activity.DetailToChat(chat_id, id);
                 }
                 else{
                     Toast toast=Toast.makeText(getContext(),"아직 공동구매에 참가하지 않았거나 확인할 수가 없습니다",Toast.LENGTH_SHORT);
@@ -117,22 +125,18 @@ public class DetailFragment extends Fragment {
             }
         });
 
-
-
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        //binding = null;
     }
 
-    public void init(){
-        Bundle bundle = getArguments();
-        token = bundle.getInt("token");
-        id = bundle.getInt("content-id");
-
+    public void init() {
+        token = GlobalObject.getToken();
+        id = GlobalObject.getContentid();
 
         OkHttpClient client = new OkHttpClient();
 
@@ -145,10 +149,13 @@ public class DetailFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -157,9 +164,12 @@ public class DetailFragment extends Fragment {
                 final String myResponse = response.body().string();
 
                 Gson gson = new GsonBuilder().create();
+                Log.d("ahoy", url);
+                Log.d("ahoy", myResponse);
                 final ContentModel data = gson.fromJson(myResponse, ContentModel.class);
                 img_url = "https://"+data.getContent().getImage_url();
                 chat_id = data.getContent().getChat_id();
+                owner = data.getContent().getOwner();
 
                 MainActivity activity = (MainActivity) getActivity();
                 activity.runOnUiThread(new Runnable() {
@@ -184,10 +194,15 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getHost(String email){
@@ -201,10 +216,13 @@ public class DetailFragment extends Fragment {
                 .url(url1)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client1.newCall(req1).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -229,10 +247,15 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
-
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void user_join(){
@@ -247,10 +270,13 @@ public class DetailFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -287,11 +313,17 @@ public class DetailFragment extends Fragment {
 
                     }
                 });
-                init();
 
+                init();
+                countDownLatch.countDown();
             }
         });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void user_exit(){
@@ -306,10 +338,12 @@ public class DetailFragment extends Fragment {
                 .url(url)
                 .build();
 
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         client.newCall(req).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -343,12 +377,16 @@ public class DetailFragment extends Fragment {
                     }
                 });
                 init();
-
+                countDownLatch.countDown();
 
             }
         });
 
-
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }

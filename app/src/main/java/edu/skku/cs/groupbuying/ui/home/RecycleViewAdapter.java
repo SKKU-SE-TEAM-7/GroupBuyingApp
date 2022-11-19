@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.ItemData;
 import edu.skku.cs.groupbuying.MainActivity;
 import edu.skku.cs.groupbuying.R;
@@ -76,11 +77,12 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle result = new Bundle();
-                result.putInt("token", mToken);
-                result.putInt("content-id", id);
+                //Bundle result = new Bundle();
+                //result.putInt("token", mToken);
+                //result.putInt("content-id", id);
+                GlobalObject.setContentid(id);
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.action_navigation_home_to_navigation_detail, result);
+                navController.navigate(R.id.action_navigation_home_to_navigation_detail);//, result);
             }
         });
     }

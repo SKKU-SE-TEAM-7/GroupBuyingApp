@@ -1,16 +1,16 @@
-package edu.skku.cs.groupbuying;
+package edu.skku.cs.groupbuying.networkobject;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-import edu.skku.cs.groupbuying.networkobject.ResponseChatGetlist;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -18,26 +18,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ChatData {
-    public String item_img;
-    public String title;
-    public int chatid;
-    public int contentid;
-    public String host_email;
+public class NetworkSnip {
+    static String nickname;
 
-    public ChatData(String item_title, int chatid, int contentid) {
-        //this.item_img = R.drawable.ic_baseline_person_24;
-        this.title = item_title;
-        this.chatid = chatid;
-        this.contentid = contentid;
-
+    public static String getNicknamebyEmail(String email) {
         final String server_adrs = "http://52.78.137.254:8080";
         OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(server_adrs + "/content/get").newBuilder();
-        urlBuilder.addQueryParameter("token", Integer.toString(GlobalObject.getToken()));
-        urlBuilder.addQueryParameter("content-id", Integer.toString(contentid));
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(server_adrs + "/user/getinfo").newBuilder();
+        urlBuilder.addQueryParameter("email", email);
+
         String url = urlBuilder.build().toString();
         Request req = new Request.Builder().url(url).build();
+
+        Log.d("ahoy", "url: " + url);
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -49,13 +42,12 @@ public class ChatData {
             public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
                 String responseStr = resp.body().string();
 
-                Log.d("ahoy", "chatdata: " + responseStr);
+                JsonElement element = JsonParser.parseString(responseStr);
+                JsonObject object = element.getAsJsonObject();
 
-                JsonObject jsonObject = JsonParser.parseString(responseStr).getAsJsonObject();
+                Log.d("ahoy", "netsnip: " + responseStr);
 
-                item_img = jsonObject.get("content").getAsJsonObject().get("image-url").getAsString();
-                title = jsonObject.get("content").getAsJsonObject().get("title").getAsString();
-                host_email = jsonObject.get("content").getAsJsonObject().get("owner").getAsString();
+                nickname = object.get("user_info").getAsJsonObject().get("nickname").getAsString();
 
                 countDownLatch.countDown();
             }
@@ -67,5 +59,6 @@ public class ChatData {
             e.printStackTrace();
         }
 
+        return nickname;
     }
 }

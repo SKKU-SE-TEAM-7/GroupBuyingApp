@@ -1,12 +1,12 @@
 package edu.skku.cs.groupbuying.ui.chat;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,18 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 import edu.skku.cs.groupbuying.GlobalObject;
@@ -51,15 +53,28 @@ public class ChatFragment extends Fragment {
     private FragmentChatBinding binding;
     private ArrayList<Chat> mData = new ArrayList<>();
     private int chatid;
+    private int contentid;
+    private String chattitle;
+    private Activity mActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        mActivity = getActivity();
+
+        /*
+        if (GlobalObject.getReviewed()) {
+            GlobalObject.setReviewed(false);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+            navController.navigate(R.id.action_navigation_chat_to_navigation_dashboard);
+        }*/
+
+        init();
+
         ChatViewModel homeViewModel =
                 new ViewModelProvider(this).get(ChatViewModel.class);
 
@@ -67,7 +82,36 @@ public class ChatFragment extends Fragment {
         View root = binding.getRoot();
 
         TextView chat_title = binding.chatTitle;
-        chat_title.setText(Integer.toString(chatid)+"번 채팅방");
+        final String server_adrs = "http://52.78.137.254:8080";
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(server_adrs + "/content/get").newBuilder();
+        urlBuilder.addQueryParameter("token", Integer.toString(GlobalObject.getToken()));
+        urlBuilder.addQueryParameter("content-id", Integer.toString(contentid));
+        String url = urlBuilder.build().toString();
+        Request req = new Request.Builder().url(url).build();
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        client.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) { chattitle = ""; countDownLatch.countDown(); }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
+                String responseStr = resp.body().string();
+
+                chattitle = JsonParser.parseString(responseStr).getAsJsonObject().get("content").getAsJsonObject().get("title").getAsString();
+                countDownLatch.countDown();
+            }
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        chat_title.setText(chattitle);
 
         EditText chat_type = binding.chatType;
 
@@ -124,6 +168,43 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        ExtendedFloatingActionButton chat_recv = binding.moveReview;
+        chat_recv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OkHttpClient client = new OkHttpClient();
+                //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/chat/receive").newBuilder();
+                HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/content/canceljoin").newBuilder();
+                urlBuilder.addQueryParameter("token", Integer.toString(GlobalObject.getToken()));
+                urlBuilder.addQueryParameter("content-id", Integer.toString(contentid));
+                urlBuilder.addQueryParameter("chat-id", Integer.toString(chatid));
+                String url = urlBuilder.build().toString();
+                Request req = new Request.Builder().url(url).build();
+                CountDownLatch countDownLatch = new CountDownLatch(1);
+                client.newCall(req).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) { countDownLatch.countDown(); }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
+                        String responseStr = resp.body().string();
+                        Log.d("ahoy", "receive: " + responseStr);
+
+                        countDownLatch.countDown();
+                    }
+                });
+
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.action_navigation_chat_to_navigation_review);
+            }
+        });
+
         hideBottomNavigation(false);
         return root;
     }
@@ -143,14 +224,11 @@ public class ChatFragment extends Fragment {
     }
 
     private void init() {
-        Log.d("ahoy", "chatfrag init");
         Bundle bundle = getArguments();
         chatid = bundle.getInt("chat-id");
-        Log.d("ahoy", "chatfrag init chatid: " + Integer.toString((chatid)));
+        contentid = bundle.getInt("content-id");
 
         update_chat();
-
-        Log.d("ahoy", "end of chatfrag init: size: " + mData.size());
     }
 
     private void update_chat() {
@@ -173,11 +251,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
                 String responseStr = resp.body().string();
-                Log.d("ahoy", "onresp: " + responseStr);
 
                 ResponseChatGetchat response = new ResponseChatGetchat(responseStr);
-
-                Log.d("ahoy", "after onresp " + response.getChatinfo().getChats().size());
 
                 for (int i = 0; i < response.getChatinfo().getChats().size(); i++) {
                     chat ch = response.getChatinfo().getChats().get(i);
@@ -191,9 +266,7 @@ public class ChatFragment extends Fragment {
 
         try {
             countDownLatch.await();
-            Log.d("ahoy", "await");
         } catch (InterruptedException e) {
-            Log.d("ahoy", "catch");
             e.printStackTrace();
         }
     }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.review.ReviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/review_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이 사용자에게 별점을 남겨주세요"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"
+
+            app:layout_constraintBottom_toTopOf="@id/review_hostprofile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/review_hostprofile"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_text"
+            app:layout_constraintBottom_toTopOf="@id/review_host"
+            />
+
+        <TextView
+            android:id="@+id/review_host"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="host user"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+
+            app:layout_constraintBottom_toTopOf="@id/review_rating"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_hostprofile" />
+
+        <RatingBar
+            android:id="@+id/review_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/review_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_host"
+            android:rating="3"
+            android:numStars="5"
+            android:max="5"
+            android:stepSize="1"
+            />
+
+        <Button
+            android:id="@+id/review_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="리뷰 남기기"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_rating" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
