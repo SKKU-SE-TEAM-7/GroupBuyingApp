@@ -23,6 +23,7 @@ public class ChatData {
     public String title;
     public int chatid;
     public int contentid;
+    public String host_email;
 
     public ChatData(String item_title, int chatid, int contentid) {
         //this.item_img = R.drawable.ic_baseline_person_24;
@@ -48,10 +49,13 @@ public class ChatData {
             public void onResponse(@NonNull Call call, @NonNull Response resp) throws IOException {
                 String responseStr = resp.body().string();
 
+                Log.d("ahoy", "chatdata: " + responseStr);
+
                 JsonObject jsonObject = JsonParser.parseString(responseStr).getAsJsonObject();
 
                 item_img = jsonObject.get("content").getAsJsonObject().get("image-url").getAsString();
                 title = jsonObject.get("content").getAsJsonObject().get("title").getAsString();
+                host_email = jsonObject.get("content").getAsJsonObject().get("owner").getAsString();
 
                 countDownLatch.countDown();
             }

@@ -161,6 +161,8 @@ public class DetailFragment extends Fragment {
                 final String myResponse = response.body().string();
 
                 Gson gson = new GsonBuilder().create();
+                Log.d("ahoy", url);
+                Log.d("ahoy", myResponse);
                 final ContentModel data = gson.fromJson(myResponse, ContentModel.class);
                 img_url = "https://"+data.getContent().getImage_url();
                 chat_id = data.getContent().getChat_id();

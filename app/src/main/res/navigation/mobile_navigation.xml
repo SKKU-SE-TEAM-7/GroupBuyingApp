@@ -81,5 +81,16 @@
         android:id="@+id/navigation_chat"
         android:name="edu.skku.cs.groupbuying.ui.chat.ChatFragment"
         android:label="@string/title_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_navigation_chat_to_navigation_review"
+            app:destination="@id/navigation_review"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_review"
+        android:name="edu.skku.cs.groupbuying.ui.review.ReviewFragment"
+        android:label="@string/title_review"
+        tools:layout="@layout/fragment_review" />
 </navigation>
