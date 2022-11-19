@@ -92,5 +92,10 @@
         android:id="@+id/navigation_review"
         android:name="edu.skku.cs.groupbuying.ui.review.ReviewFragment"
         android:label="@string/title_review"
-        tools:layout="@layout/fragment_review" />
+        tools:layout="@layout/fragment_review">
+        <action
+            android:id="@+id/action_navigation_review_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard"
+            />
+    </fragment>
 </navigation>

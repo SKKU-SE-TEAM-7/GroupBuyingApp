@@ -66,12 +66,12 @@ public class ChatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mActivity = getActivity();
-
+/*
         if (GlobalObject.getReviewed()) {
             Log.d("ahoy", "reviewed");
             GlobalObject.setReviewed(false);
             getActivity().getSupportFragmentManager().popBackStackImmediate();
-        }
+        }*/
 
         ChatViewModel homeViewModel =
                 new ViewModelProvider(this).get(ChatViewModel.class);
@@ -171,8 +171,10 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 OkHttpClient client = new OkHttpClient();
-                HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/chat/receive").newBuilder();
+                //HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/chat/receive").newBuilder();
+                HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/content/canceljoin").newBuilder();
                 urlBuilder.addQueryParameter("token", Integer.toString(GlobalObject.getToken()));
+                urlBuilder.addQueryParameter("content-id", Integer.toString(contentid));
                 urlBuilder.addQueryParameter("chat-id", Integer.toString(chatid));
                 String url = urlBuilder.build().toString();
                 Request req = new Request.Builder().url(url).build();

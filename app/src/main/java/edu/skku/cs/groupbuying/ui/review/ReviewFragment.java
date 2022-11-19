@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import edu.skku.cs.groupbuying.ChatData;
 import edu.skku.cs.groupbuying.GlobalObject;
@@ -98,7 +100,8 @@ public class ReviewFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                getActivity().getSupportFragmentManager().popBackStack();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.action_navigation_review_to_navigation_dashboard);
             }
         });
 
