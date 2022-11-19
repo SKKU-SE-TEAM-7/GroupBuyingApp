@@ -43,18 +43,6 @@
                     app:layout_constraintStart_toEndOf="@+id/item_image"
                     app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
-                <Button
-                    android:id="@+id/join_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#00ff0000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
                 <ProgressBar
                     android:id="@+id/item_progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -80,5 +68,17 @@
                     android:textColor="@color/black"
                     app:layout_constraintStart_toEndOf="@+id/item_image"
                     app:layout_constraintTop_toBottomOf="@+id/item_progressBar" />
+
+                <Button
+                    android:id="@+id/join_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00ff0000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

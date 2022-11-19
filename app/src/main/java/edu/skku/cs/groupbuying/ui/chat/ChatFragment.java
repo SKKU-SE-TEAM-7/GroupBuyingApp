@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -66,19 +67,19 @@ public class ChatFragment extends Fragment {
         View root = binding.getRoot();
 
         TextView chat_title = binding.chatTitle;
-        chat_title.setText(Integer.toString(chatid));
+        chat_title.setText(Integer.toString(chatid)+"번 채팅방");
 
         EditText chat_type = binding.chatType;
 
-        Button chat_sendbtn = binding.chatSendbtn;
+        ImageButton chat_sendbtn = binding.chatSendbtn;
 
         recyclerView = binding.chatList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecyclerViewAdapter(mData, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
-        DividerItemDecoration dividerDecoration =
-                new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-        recyclerView.addItemDecoration(dividerDecoration);
+        //DividerItemDecoration dividerDecoration =
+        //        new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
+        //recyclerView.addItemDecoration(dividerDecoration);
 
         chat_sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
