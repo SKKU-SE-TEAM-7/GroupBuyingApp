@@ -86,6 +86,10 @@
             android:id="@+id/action_navigation_chat_to_navigation_review"
             app:destination="@id/navigation_review"
             />
+        <action
+            android:id="@+id/action_navigation_chat_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard"
+            />
     </fragment>
 
     <fragment
@@ -93,6 +97,10 @@
         android:name="edu.skku.cs.groupbuying.ui.review.ReviewFragment"
         android:label="@string/title_review"
         tools:layout="@layout/fragment_review">
+        <action
+            android:id="@+id/action_navigation_review_to_navigation_chat"
+            app:destination="@id/navigation_chat"
+            />
         <action
             android:id="@+id/action_navigation_review_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard"

@@ -1,6 +1,7 @@
 package edu.skku.cs.groupbuying.ui.review;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -100,6 +101,9 @@ public class ReviewFragment extends Fragment {
                     e.printStackTrace();
                 }
 
+                /*
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.action_navigation_review_to_navigation_chat);*/
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
                 navController.navigate(R.id.action_navigation_review_to_navigation_dashboard);
             }

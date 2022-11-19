@@ -1,5 +1,7 @@
 package edu.skku.cs.groupbuying.networkobject;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.JsonElement;
@@ -28,6 +30,8 @@ public class NetworkSnip {
         String url = urlBuilder.build().toString();
         Request req = new Request.Builder().url(url).build();
 
+        Log.d("ahoy", "url: " + url);
+
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         client.newCall(req).enqueue(new Callback() {
@@ -40,6 +44,8 @@ public class NetworkSnip {
 
                 JsonElement element = JsonParser.parseString(responseStr);
                 JsonObject object = element.getAsJsonObject();
+
+                Log.d("ahoy", "netsnip: " + responseStr);
 
                 nickname = object.get("user_info").getAsJsonObject().get("nickname").getAsString();
 

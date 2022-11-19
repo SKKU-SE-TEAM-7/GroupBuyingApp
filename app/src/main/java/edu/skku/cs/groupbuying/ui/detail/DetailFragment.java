@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Priority;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,6 +48,7 @@ public class DetailFragment extends Fragment {
     public int chat_id;
     public boolean user_join;
     public boolean open = false;
+    public String owner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,8 +106,9 @@ public class DetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(user_join){
+                    GlobalObject.setReview_host_email(owner);
                     MainActivity activity = (MainActivity) getActivity();
-                    activity.DetailToChat(chat_id);
+                    activity.DetailToChat(chat_id, id);
                 }
                 else{
                     Toast toast=Toast.makeText(getContext(),"아직 공동구매에 참가하지 않았거나 확인할 수가 없습니다",Toast.LENGTH_SHORT);
@@ -166,6 +169,7 @@ public class DetailFragment extends Fragment {
                 final ContentModel data = gson.fromJson(myResponse, ContentModel.class);
                 img_url = "https://"+data.getContent().getImage_url();
                 chat_id = data.getContent().getChat_id();
+                owner = data.getContent().getOwner();
 
                 MainActivity activity = (MainActivity) getActivity();
                 activity.runOnUiThread(new Runnable() {

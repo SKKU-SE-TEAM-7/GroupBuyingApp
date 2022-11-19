@@ -60,18 +60,20 @@ public class ChatFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mActivity = getActivity();
-/*
+
+        /*
         if (GlobalObject.getReviewed()) {
-            Log.d("ahoy", "reviewed");
             GlobalObject.setReviewed(false);
-            getActivity().getSupportFragmentManager().popBackStackImmediate();
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+            navController.navigate(R.id.action_navigation_chat_to_navigation_dashboard);
         }*/
+
+        init();
 
         ChatViewModel homeViewModel =
                 new ViewModelProvider(this).get(ChatViewModel.class);
