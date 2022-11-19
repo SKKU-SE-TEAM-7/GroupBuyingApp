@@ -8,8 +8,8 @@
 
     <ImageButton
         android:id="@+id/search"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_search_24"
@@ -19,15 +19,15 @@
     <EditText
         android:id="@+id/search_space"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/purple_500"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
         android:ems="10"
-        android:layout_margin="16dp"
         android:hint="검색어를 입력하세요"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/search"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
