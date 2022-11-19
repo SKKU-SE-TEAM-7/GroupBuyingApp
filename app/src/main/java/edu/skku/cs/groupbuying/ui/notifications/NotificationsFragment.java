@@ -105,7 +105,7 @@ public class NotificationsFragment extends Fragment {
                     Log.d("hi",data.getUser_info().getJoin_content().get(i));
                     contentid.add(data.getUser_info().getJoin_content().get(i));
                 }
-                textView.setText("유저: "+ data.getUser_info().getNickname());
+                textView.setText(data.getUser_info().getNickname());
 
 
                 for(int i=0; i<contentid.size();i++){
