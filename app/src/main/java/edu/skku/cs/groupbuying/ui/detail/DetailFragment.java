@@ -24,6 +24,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -46,7 +48,7 @@ public class DetailFragment extends Fragment {
     private FragmentDetailBinding binding;
     public String img_url;
     public int chat_id;
-    public boolean user_join;
+    public boolean user_join = false;
     public boolean open = false;
     public String owner;
 
@@ -105,6 +107,46 @@ public class DetailFragment extends Fragment {
         detail_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                OkHttpClient client = new OkHttpClient();
+
+                HttpUrl.Builder urlBuilder = HttpUrl.parse("http://52.78.137.254:8080/user/joinlist").newBuilder();
+                urlBuilder.addQueryParameter("token", Integer.toString(token));
+                String url = urlBuilder.build().toString();
+
+                Request req = new Request.Builder()
+                        .url(url)
+                        .build();
+
+                CountDownLatch countDownLatch = new CountDownLatch(1);
+
+                client.newCall(req).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        e.printStackTrace();
+                        countDownLatch.countDown();
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        final int code = response.code();
+                        final String myResponse = response.body().string();
+                        JsonArray joinlist = JsonParser.parseString(myResponse).getAsJsonObject().get("joinlist").getAsJsonArray();
+                        for (int i = 0; i < joinlist.size(); i++) {
+                            if (joinlist.get(i).getAsInt() == id) {
+                                user_join = true;
+                                break;
+                            }
+                        }
+                        countDownLatch.countDown();
+                    }
+                });
+
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 if(user_join){
                     GlobalObject.setReview_host_email(owner);
                     MainActivity activity = (MainActivity) getActivity();
