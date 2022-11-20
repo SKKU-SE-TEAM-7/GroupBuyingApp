@@ -216,6 +216,11 @@ public class HomeFragment extends Fragment {
                                 new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
                         recyclerView.addItemDecoration(dividerDecoration);
 
+                        if(mData.size() == 0){
+                            Toast toast=Toast.makeText(getContext(),"검색 결과가 없습니다",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+
                     }
                 });
 
