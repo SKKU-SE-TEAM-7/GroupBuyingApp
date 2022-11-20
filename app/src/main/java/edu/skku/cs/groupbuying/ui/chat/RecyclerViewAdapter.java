@@ -38,7 +38,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     RecyclerViewAdapter(ArrayList<Chat> list, Activity activity) {
-        Log.d("ahoy", "adapter: " + Integer.toString(list.size()));
         mData = list ;
         mActivity = activity;
     }

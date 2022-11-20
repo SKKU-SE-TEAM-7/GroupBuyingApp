@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import edu.skku.cs.groupbuying.ChatData;
+import edu.skku.cs.groupbuying.GlobalObject;
 import edu.skku.cs.groupbuying.R;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -57,11 +58,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //holder.mImage.setImageResource(R.drawable.ic_baseline_image_24);
         holder.mTitle.setText(mData.get(position).title);
         int chatid = mData.get(position).chatid;
+        int contentid = mData.get(position).contentid;
         holder.mJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("chat-id", chatid);
+                bundle.putInt("content-id", contentid);
+                GlobalObject.setReview_host_email(mData.get(position).host_email);
                 NavController navController = Navigation.findNavController(mActivity, R.id.nav_host_fragment_activity_main);
                 navController.navigate(R.id.action_navigation_dashboard_to_navigation_chat, bundle);
             }

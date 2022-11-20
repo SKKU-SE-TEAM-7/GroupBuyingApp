@@ -56,18 +56,20 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initDataset();
+        //initDataset();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        initDataset();
+        //initDataset();
 
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        initDataset();
 
         final FloatingActionButton add = binding.addNew;
         add.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +96,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        //binding = null;
     }
 
     public void hideBottomNavigation(Boolean bool) {
@@ -106,8 +108,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void initDataset() {
-        Bundle bundle = getArguments();
-        token = bundle.getInt("token");
+        //Bundle bundle = getArguments();
+        //token = bundle.getInt("token");
+        token = GlobalObject.getToken();
 
 
         OkHttpClient client = new OkHttpClient();
